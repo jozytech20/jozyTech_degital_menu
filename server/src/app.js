@@ -2,7 +2,7 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import authRouter from "./routes/auth/auth-routes.js"
-import { protect, authorize } from "./middlewares/auth-middleware.js";
+import venueRoutes from "./routes/admin/venue-routes.js"
 
 const app = express();
 app.use(
@@ -15,18 +15,16 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api/auth", authRouter)
-app.get("/api/test/protected", protect, (req, res) => {
-  res.json({ success: true, message: "You are authenticated", user: req.user });
-});
+app.use("/api/admin", venueRoutes)
 
-app.get(
-  "/api/test/admin-only",
-  protect,
-  authorize("superAdmin"),
-  (req, res) => {
-    res.json({ success: true, message: "You are a super admin" });
-  },
-);
+// app.get(
+//   "/api/test/admin-only",
+//   protect,
+//   authorize("superAdmin"),
+//   (req, res) => {
+//     res.json({ success: true, message: "You are a super admin" });
+//   },
+// );
 
 
 export default app;
