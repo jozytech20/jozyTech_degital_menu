@@ -112,3 +112,106 @@ export const createVenue = async( req, res ) =>{
    session.endSession();
  }
 }
+
+export const fetchVenues = async(req, res) =>{
+  try {
+    const { search } = req.query;
+
+    const filter = search ? { name: { $regex: search, $options: "i" } } : {};
+
+    const venues = await Venue.find(filter);
+
+    if ( venues.length <= 0 ) {
+      res.status(404).json({
+        success: false,
+        message: "No Venues Found!",
+      });
+    }
+
+     res.status(200).json({
+       success: true,
+       message: "venues successfully fetched!",
+       data: venues,
+     });
+
+  } catch (error) {
+    console.error(error);
+     res.status(500).json({
+       success: false,
+       message: "Internal server error!",
+     });
+  }
+}
+
+export const updateVenue = async( req, res) =>{
+ try {
+   const id = req.params.id;
+
+   const {
+     slug,
+     name,
+     email,
+     phone,
+     website,
+     status,
+     // subscription,  //obj
+     branding, //obj
+   } = req.body;
+
+   const venue = await Venue.findById(id);
+   if (!venue) {
+    return res.status(404).json({
+       success: false,
+       message: "No Venue Found!",
+     });
+   }
+
+   if (slug) {
+     const reservedSlugs = ["www", "api", "admin", "dashboard", "app", "mail"];
+     if (reservedSlugs.includes(slug)) {
+       return res.status(400).json({
+         success: false,
+         message: "This slug is reserved",
+       });
+     }
+
+     const existingVenue = await Venue.findOne({ slug, _id: { $ne: id } });
+     if (existingVenue) {
+       return res.status(409).json({
+         success: false,
+         message: "This slug is already taken",
+       });
+     }
+
+     venue.slug = slug;
+   }
+   
+   if (name) venue.name = name;
+   if (email) venue.email = email;
+   if (phone) venue.phone = phone;
+   if (website) venue.website = website;
+   if (status) venue.status = status;
+
+    if (branding) {
+      if (branding.logoUrl) venue.branding.logoUrl = branding.logoUrl;
+      if (branding.theme?.primaryColor)
+        venue.branding.theme.primaryColor = branding.theme.primaryColor;
+      if (branding.theme?.secondaryColor)
+        venue.branding.theme.secondaryColor = branding.theme.secondaryColor;
+    }
+
+   await venue.save();
+
+   res.status(200).json({
+     success: true,
+     message: "venue successfully updated!",
+     data : venue,
+   });
+ } catch (error) {
+  console.error(error);
+  res.status(500).json({
+    success: false,
+    message: "Internal server error!",
+  });
+ }
+}

@@ -3,6 +3,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import authRouter from "./routes/auth/auth-routes.js"
 import venueRoutes from "./routes/admin/venue-routes.js"
+import userRoutes from "./routes/user/user-routes.js"
 
 const app = express();
 app.use(
@@ -16,6 +17,7 @@ app.use(cookieParser());
 
 app.use("/api/auth", authRouter)
 app.use("/api/admin", venueRoutes)
+app.use("/api/admin", userRoutes)
 
 // app.get(
 //   "/api/test/admin-only",
