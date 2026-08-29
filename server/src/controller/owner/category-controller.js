@@ -12,7 +12,6 @@ export const createCategory = async(req, res) =>{
         message: "Invalid credentials!",
       });
     }
-    
 
     const category = await Category.create({
       venueId: id,
@@ -58,7 +57,7 @@ export const fetchCategory = async(req, res) =>{
 
 export const updateCategory = async(req, res)=>{
   try {
-    const id = req.params.id;
+    const id = req.params.id;   //
     const venueId = req.user.venueId;
     const { name, description, image, isActive} = req.body;
 
@@ -79,7 +78,7 @@ export const updateCategory = async(req, res)=>{
 
     res.status(200).json({
       success : true,
-      message : "category successfully updated!"
+      message : "category successfully updated!",
     })
 
   } catch (error) {
