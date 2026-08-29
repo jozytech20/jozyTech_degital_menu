@@ -121,13 +121,7 @@ export const fetchVenues = async(req, res) =>{
 
     const venues = await Venue.find(filter);
 
-    if ( venues.length <= 0 ) {
-      res.status(404).json({
-        success: false,
-        message: "No Venues Found!",
-      });
-    }
-
+   
      res.status(200).json({
        success: true,
        message: "venues successfully fetched!",

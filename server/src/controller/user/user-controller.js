@@ -4,12 +4,6 @@ import User from "../../model/User.js";
 export const fetchUsers = async (req, res) => {
   try {
     const users = await User.find().select("-password");
-    if (users.length <= 0) {
-      return res.status(404).json({
-        success: false,
-        message: "No users found",
-      });
-    }
 
     res.status(200).json({
       success: true,
