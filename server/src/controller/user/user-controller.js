@@ -83,6 +83,13 @@ export const deleteUser = async (req, res) => {
       });
     }
 
+    if (String(user._id) === String(req.user.id)) {
+      return res.status(400).json({
+        success: false,
+        message: "You cannot delete your own account",
+      });
+    }
+
     // Cascade delete only applies to owners who actually have a venue
     if (user.role === "owner" && user.venueId) {
       await MenuItem.deleteMany({ venueId: user.venueId }, { session });
