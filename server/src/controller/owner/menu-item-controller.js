@@ -2,7 +2,6 @@ import Category from "../../model/Category.js";
 import MenuItem from "../../model/MenuItem.js";
 
 
-
 export const createMenuItem = async(req, res) =>{
  try {
     const venueId = req.user.venueId;
@@ -18,7 +17,7 @@ export const createMenuItem = async(req, res) =>{
       isFeatured,
     } = req.body;
 
-    if (!categoryId || !name || !description || !price ) {
+    if (!categoryId || !name || !price ) {
       return res.status(400).json({
         success: false,
         message: "Invalid credentials!",

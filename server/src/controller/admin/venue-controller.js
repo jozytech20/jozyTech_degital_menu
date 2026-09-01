@@ -192,6 +192,7 @@ export const updateVenue = async( req, res) =>{
         venue.branding.theme.primaryColor = branding.theme.primaryColor;
       if (branding.theme?.secondaryColor)
         venue.branding.theme.secondaryColor = branding.theme.secondaryColor;
+      if (branding.qrCodeUrl) venue.branding.qrCodeUrl = branding.qrCodeUrl;
     }
 
    await venue.save();
