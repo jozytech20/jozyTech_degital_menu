@@ -47,8 +47,14 @@ export const loginUser = async (req, res) => {
     maxAge: 24 * 60 * 60 * 1000,
   });
 
-  res.status(200).json({
-    success : true,
-    message : "User successfully loggedIn!"
-  })
+ res.status(200).json({
+   success: true,
+   message: "Login successful",
+   data: {
+     id: user._id,
+     name: user.name,
+     role: user.role,
+     venueId: user.venueId,
+   },
+ });
 };
