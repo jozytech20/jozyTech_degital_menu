@@ -14,10 +14,22 @@ const app = express();
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL, // your frontend's origin, from .env
-    credentials: true, // required so the browser sends/receives the httpOnly cookie
+    origin: (origin, callback) => {
+      if (
+        !origin ||
+        /\.?localhost:5173$/.test(origin) ||
+        origin === process.env.CLIENT_URL
+      ) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
   }),
 );
+
+
 app.use(express.json());
 app.use(cookieParser());
 

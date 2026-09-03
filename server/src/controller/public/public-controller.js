@@ -36,7 +36,10 @@ export const getPublicMenu = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ success: false, message: "Internal server error!" });
+    res.status(500).json({ 
+      success: false, 
+      message: "Internal server error!" 
+    });
   }
 };
 
@@ -65,6 +68,9 @@ export const searchPublicMenu = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ success: false, message: "Internal server error!" });
+    res.status(500).json({ 
+      success: false, 
+      message: "Internal server error!" 
+    });
   }
 };

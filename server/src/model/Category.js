@@ -13,8 +13,14 @@ const categorySchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    description: String,
-    image: String,
+    description: {
+      type: String,
+      default : "",
+    },
+    image: {
+      type : String,
+      default : "",
+    },
     sortOrder: {
       type: Number,
       default: 0,

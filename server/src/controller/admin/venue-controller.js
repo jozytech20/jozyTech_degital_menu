@@ -82,7 +82,7 @@ export const createVenue = async( req, res ) =>{
          name: venueName,
          email: venueEmail,
          phone,
-         website: website || null,
+         website: website,
          slug,
          ownerId: owner[0]._id,
          createdBy: req.user.id,

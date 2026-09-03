@@ -28,7 +28,10 @@ const venueSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    website: String,
+    website: {
+      type: String,
+      default : "",
+    },
     status: {
       type: String,
       enum: ["active", "paused"],
