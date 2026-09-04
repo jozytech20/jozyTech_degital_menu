@@ -35,6 +35,8 @@ function Login() {
          : "/dashboard/owner",
      );
     } catch (err) {
+      console.error(err);
+      
       setError("Invalid email or password");
     } finally {
       setLoading(false);

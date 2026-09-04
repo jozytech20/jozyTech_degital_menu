@@ -8,9 +8,9 @@ interface ProtectedRouteProps {
 
 function ProtectedRoute({ children, allowedRole }: ProtectedRouteProps) {
   const user = useAuthStore((state) => state.user);
-  const loading = useAuthStore((state) => state.isLoading);
+  const isLoading = useAuthStore((state) => state.isLoading);
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         Loading...

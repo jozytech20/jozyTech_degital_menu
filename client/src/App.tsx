@@ -10,22 +10,26 @@ import type { AuthUser } from "./types/user";
 
 function App() {
  const setUser = useAuthStore((state) => state.setUser);
- const setLoading = useAuthStore((state) => state.setLoading);
+ const setIsLoading = useAuthStore((state) => state.setIsLoading);
 
  useEffect(() => {
    const checkAuth = async () => {
      try {
        const response = await api.get<{ data: AuthUser }>("/auth/me");
        setUser(response.data.data);
+       console.log(response);
+       
      } catch (err) {
+      console.error(err);
+      
        setUser(null);
      } finally {
-       setLoading(false);
+       setIsLoading(false);
      }
    };
 
    checkAuth();
- }, [setUser, setLoading]);
+ }, []);
 
 
   return (
