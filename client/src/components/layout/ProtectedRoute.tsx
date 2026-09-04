@@ -1,5 +1,6 @@
 import { Navigate } from "react-router-dom";
 import { useAuthStore } from "../../store/authStore";
+import { useEffect, useState } from "react";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -9,14 +10,23 @@ interface ProtectedRouteProps {
 function ProtectedRoute({ children, allowedRole }: ProtectedRouteProps) {
   const user = useAuthStore((state) => state.user);
   const isLoading = useAuthStore((state) => state.isLoading);
+  const [timedOut, setTimedOut] = useState(false);
+
+
+  useEffect(() => {
+    const timer = setTimeout(() => setTimedOut(true), 10000); // 10s
+    return () => clearTimeout(timer);
+  }, []);
 
   if (isLoading) {
+    if (timedOut) return <Navigate to="/login" replace />;
     return (
       <div className="flex min-h-screen items-center justify-center">
         Loading...
       </div>
     );
   }
+
 
   if (!user) return <Navigate to="/login" replace />;
 
@@ -30,6 +40,7 @@ function ProtectedRoute({ children, allowedRole }: ProtectedRouteProps) {
       />
     );
   }
+
 
   return <>{children}</>;
 }

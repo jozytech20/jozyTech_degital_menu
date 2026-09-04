@@ -5,8 +5,13 @@ import { protect } from "../../middlewares/auth-middleware.js";
 
 const router = express.Router();
 
-router.post("/login",loginLimiter, loginUser)
-router.get("/me", protect , getMe);
+router.post("/login", loginLimiter, loginUser)
+router.get("/me", protect, getMe);
+router.post("/logout", protect, (req, res) => {
+    res.clearCookie("token", { httpOnly: true, sameSite: "none", secure: true });
+    res.json({ success: true, message: "Logged out" });
+});
+
 
 
 export default router;
