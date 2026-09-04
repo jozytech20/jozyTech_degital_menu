@@ -1,0 +1,30 @@
+frontend/
+└── src/
+    ├── lib/
+    │   └── api.ts                 ← axios instance
+    ├── store/
+    │   └── authStore.ts           ← zustand auth state
+    ├── types/
+    │   ├── menu.ts                ← MenuItem, MenuCategory, etc.
+    │   ├── venue.ts
+    │   └── user.ts
+    ├── pages/
+    │   ├── public/
+    │   │   └── PublicMenu.tsx
+    │   ├── auth/
+    │   │   └── Login.tsx
+    │   ├── owner/
+    │   │   ├── Categories.tsx
+    │   │   ├── MenuItems.tsx
+    │   │   └── VenueSettings.tsx
+    │   └── admin/
+    │       ├── Venues.tsx
+    │       └── Users.tsx
+    ├── components/
+    │   ├── layout/
+    │   │   ├── DashboardLayout.tsx  ← sidebar + shared shell for owner/admin
+    │   │   └── ProtectedRoute.tsx
+    │   └── ui/
+    │       └── (buttons, inputs, cards — small reusable pieces)
+    ├── App.tsx
+    └── main.tsx

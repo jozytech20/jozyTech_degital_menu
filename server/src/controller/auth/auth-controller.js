@@ -34,7 +34,7 @@ export const loginUser = async (req, res) => {
       id: user._id,
       venueId: user.venueId,
     },
-      process.env.JWT_SECRET_KEY,
+    process.env.JWT_SECRET_KEY,
     {
       expiresIn: "1d",
     },
@@ -47,14 +47,39 @@ export const loginUser = async (req, res) => {
     maxAge: 24 * 60 * 60 * 1000,
   });
 
- res.status(200).json({
-   success: true,
-   message: "Login successful",
-   data: {
-     id: user._id,
-     name: user.name,
-     role: user.role,
-     venueId: user.venueId,
-   },
- });
+  res.status(200).json({
+    success: true,
+    message: "Login successful",
+    data: {
+      id: user._id,
+      name: user.name,
+      role: user.role,
+      venueId: user.venueId,
+    },
+  });
+};
+
+export const getMe = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "user fetched",
+      data: {
+        id: user._id,
+        name: user.name,
+        role: user.role,
+        venueId: user.venueId,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Internal server error!" });
+  }
 };
