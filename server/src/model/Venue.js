@@ -30,7 +30,7 @@ const venueSchema = new mongoose.Schema(
     },
     website: {
       type: String,
-      default : "",
+      default: "",
     },
     status: {
       type: String,

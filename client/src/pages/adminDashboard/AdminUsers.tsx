@@ -144,11 +144,11 @@ function AdminUsers() {
   ];
 
   return (
-    <div className="space-y-6 p-6 max-w-7xl mx-auto">
+    <div className="space-y-6 sm:p-6 max-w-7xl mx-auto">
       {/* Header */}
       <div>
         <p className="text-sm text-gray-500 mb-1">Dashboard &gt; Users</p>
-        <h1 className="text-2xl font-bold text-gray-900">User Management</h1>
+        <h1 className="text-lg font-bold text-gray-900">User Management</h1>
       </div>
 
       {/* Stat cards */}
