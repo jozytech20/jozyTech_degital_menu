@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
 import User from "../../model/User.js";
+import MenuItem from "../../model/MenuItem.js";
+import Category from "../../model/Category.js";
+import Venue from "../../model/Venue.js";
 
 export const fetchUsers = async (req, res) => {
   try {

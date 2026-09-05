@@ -10,3 +10,19 @@ export interface LoginResponse {
   message: string;
   data: AuthUser;
 }
+
+export interface AdminUser {
+  _id: string;
+  name: string;
+  email: string;
+  role: "owner" | "superAdmin";
+  isActive: boolean;
+  venueId: string | null;
+  createdAt: string;
+}
+
+export interface FetchUsersResponse {
+  success: boolean;
+  message: string;
+  data: AdminUser[];
+}
