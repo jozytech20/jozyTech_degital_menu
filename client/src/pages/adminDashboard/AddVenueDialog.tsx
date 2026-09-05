@@ -11,7 +11,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import api from "../../lib/api";
-import type { AdminVenue } from "../../types/venue";
+import type { AdminVenue } from "@/types/user";
+
 
 interface AddVenueDialogProps {
   open: boolean;
@@ -103,7 +104,7 @@ function AddVenueDialog({
           </div>
 
           <div>
-            <Label htmlFor="password">Temporary Password</Label>
+            <Label htmlFor="password">Password</Label>
             <Input
               id="password"
               value={password}

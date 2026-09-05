@@ -1,7 +1,5 @@
-// src/pages/admin/Venues.tsx
 import { useEffect, useState } from "react";
 import api from "../../lib/api";
-// import type { AdminVenue, FetchVenuesResponse } from "../../types/venue";
 import {
   Table,
   TableBody,
@@ -14,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import type { AdminVenue, FetchVenuesResponse } from "@/types/user";
 import EditVenueDialog from "../ownerDashboard/EditVenueDialog";
+import AddVenueDialog from "./addVenueDialog";
 
 
 function AdminVenues() {
@@ -21,12 +20,17 @@ function AdminVenues() {
   const [loading, setLoading] = useState(true);
   const [searching, setSearching] = useState(false);
   const [search, setSearch] = useState("");
+  const [editTarget, setEditTarget] = useState<AdminVenue | null>(null);
+  const [addOpen, setAddOpen] = useState(false);
 
   const totalVenues = venues.length;
   const activeVenues = venues.filter((v) => v.status === "active").length;
   const inactiveVenues = venues.filter((v) => v.status === "paused").length;
 
-  const [editTarget, setEditTarget] = useState<AdminVenue | null>(null);
+
+  const handleVenueCreated = (newVenue: AdminVenue) => {
+    setVenues((prev) => [newVenue, ...prev]);
+  };
 
   const handleVenueUpdated = (updatedVenue: AdminVenue) => {
     setVenues((prev) =>
@@ -62,7 +66,7 @@ function AdminVenues() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Venues</h1>
-        <Button>+ Add New Venue</Button>
+        <Button onClick={() => setAddOpen(true)}>+ Add New Venue</Button>
       </div>
       {/* Stat cards */}
       <div className="grid grid-cols-3 gap-4">
@@ -128,6 +132,11 @@ function AdminVenues() {
           ))}
         </TableBody>
       </Table>
+      <AddVenueDialog
+        open={addOpen}
+        onOpenChange={setAddOpen}
+        onCreated={handleVenueCreated}
+      />
       <EditVenueDialog
         open={!!editTarget}
         onOpenChange={(open) => !open && setEditTarget(null)}
