@@ -100,6 +100,7 @@ export const createVenue = async( req, res ) =>{
    res.status(201).json({
      success: true,
      message: "owner and venue successfully created! ",
+     data: venue,
    });
  } catch (error) {
   await session.abortTransaction();

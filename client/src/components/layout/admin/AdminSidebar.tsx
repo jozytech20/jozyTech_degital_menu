@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import {
   Sidebar,
   SidebarContent,
@@ -25,6 +25,8 @@ import {
 function AdminSidebar() {
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
+  const { pathname } = useLocation();
+
 
   const handleLogout = () => {
     logout();
@@ -44,21 +46,21 @@ function AdminSidebar() {
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton
-                  render={<NavLink to="/dashboard/admin" end />}
-                >
-                  <Users className="size-4" />
-                  Users
-                </SidebarMenuButton>
-
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  render={<NavLink to="/dashboard/admin/venues" />}
+                  isActive={pathname.startsWith("/dashboard/admin/venues")}
+                  render={<NavLink to="/dashboard/admin/venues" end />}
                 >
                   <Building2 className="size-4" />
                   Venues
                 </SidebarMenuButton>
-
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  isActive={pathname === "/dashboard/admin"}
+                  render={<NavLink to="/dashboard/admin" />}
+                >
+                  <Users className="size-4" />
+                  Users
+                </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
@@ -70,19 +72,30 @@ function AdminSidebar() {
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger
-                render={<SidebarMenuButton size="lg" className="cursor-pointer" />}
+                render={
+                  <SidebarMenuButton size="lg" className="cursor-pointer" />
+                }
               >
                 <div className="flex size-8 items-center justify-center rounded-full bg-sidebar-accent text-sidebar-accent-foreground font-semibold text-sm">
                   {user?.name?.charAt(0).toUpperCase() ?? "A"}
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none">
                   <span className="font-semibold text-sm">{user?.name}</span>
-                  <span className="text-xs text-muted-foreground">{user?.role}</span>
+                  <span className="text-xs text-muted-foreground">
+                    {user?.role}
+                  </span>
                 </div>
                 <ChevronUp className="ml-auto size-4" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent side="top" align="start" className="w-(--radix-dropdown-menu-trigger-width)">
-                <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
+              <DropdownMenuContent
+                side="top"
+                align="start"
+                className="w-(--radix-dropdown-menu-trigger-width)"
+              >
+                <DropdownMenuItem
+                  onClick={handleLogout}
+                  className="cursor-pointer"
+                >
                   <LogOut className="size-4 mr-2" />
                   Log out
                 </DropdownMenuItem>
@@ -91,7 +104,6 @@ function AdminSidebar() {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
-
     </Sidebar>
   );
 }

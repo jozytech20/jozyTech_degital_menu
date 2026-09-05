@@ -1,5 +1,5 @@
 // src/components/admin/DeleteUserDialog.tsx
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -25,6 +25,12 @@ function DeleteUserDialog({
 }: DeleteUserDialogProps) {
   const [confirmText, setConfirmText] = useState("");
 
+  useEffect(() => {
+    if (open) {
+      setConfirmText("");
+    }
+  }, [open]);
+
   const isMatch = confirmText === userName;
 
   const handleConfirm = () => {
@@ -32,6 +38,7 @@ function DeleteUserDialog({
     setConfirmText("");
     onOpenChange(false);
   };
+
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

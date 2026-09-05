@@ -26,3 +26,28 @@ export interface FetchUsersResponse {
   message: string;
   data: AdminUser[];
 }
+
+export interface AdminVenue {
+  _id: string;
+  name: string;
+  slug: string;
+  email: string;
+  phone: string;
+  website: string | null;
+  status: "active" | "paused";
+  ownerId: string;
+  branding: {
+    logoUrl: string;
+    theme: {
+      primaryColor: string;
+      secondaryColor: string;
+    };
+  };
+  createdAt: string;
+}
+
+export interface FetchVenuesResponse {
+  success: boolean;
+  message: string;
+  data: AdminVenue[];
+}
