@@ -6,7 +6,7 @@ import venueRoutes from "./routes/admin/venue-routes.js"
 import userRoutes from "./routes/user/user-routes.js"
 import categoryRoutes from "./routes/owner/category-routes.js";
 import menuItemRoutes from "./routes/owner/menu-item-routes.js"
-import ownerVenueRoutes from "./routes/owner/menu-item-routes.js"
+import ownerVenueRoutes from "./routes/owner/venue-routes.js"
 import publicRoutes from "./routes/public/public-routes.js";
 import imageRoutes from "./routes/uploadImage/uploadMenuItemImage.js";
 
