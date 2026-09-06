@@ -8,8 +8,8 @@ import type { AuthUser } from "./types/user";
 import AdminUsers from "./pages/adminDashboard/AdminUsers";
 import AdminVenues from "./pages/adminDashboard/AdminVenues";
 import OwnerVenue from "./pages/ownerDashboard/OwnerVenue";
-import OwnerCategories from "./pages/ownerDashboard/OwnerCategories";
-import OwnerMenuItems from "./pages/ownerDashboard/OwnerMenuItems";
+import OwnerCategories from "./pages/ownerDashboard/category/OwnerCategories";
+import OwnerMenuItems from "./pages/ownerDashboard/menuItems/OwnerMenuItems";
 import AdminLayout from "./components/layout/admin/AdminLayout";
 import OwnerLayout from "./components/layout/owner/OwnerLayout";
 

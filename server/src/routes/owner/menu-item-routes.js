@@ -4,9 +4,9 @@ import { createMenuItem, deleteMenuItem, fetchMenuItems, updateMenuItem } from "
 
 const router = express.Router();
 
-router.post("/menuItems", protect, authorize("owner"), createMenuItem);
-router.get("/menuItems", protect, authorize("owner"), fetchMenuItems);
-router.patch("/menuItems/:id", protect, authorize("owner"), updateMenuItem);
-router.delete("/menuItems/:id", protect, authorize("owner"), deleteMenuItem);
+router.post("/menu-items", protect, authorize("owner"), createMenuItem);
+router.get("/menu-items", protect, authorize("owner"), fetchMenuItems);
+router.patch("/menu-items/:id", protect, authorize("owner"), updateMenuItem);
+router.delete("/menu-items/:id", protect, authorize("owner"), deleteMenuItem);
 
 export default router;

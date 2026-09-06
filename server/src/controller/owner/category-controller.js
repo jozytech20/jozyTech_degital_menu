@@ -96,6 +96,14 @@ export const deleteCategory = async (req, res) => {
     const id = req.params.id;
     const venueId = req.user.venueId;
 
+    const itemCount = await MenuItem.countDocuments({ categoryId: id, venueId });
+    if (itemCount > 0) {
+      return res.status(400).json({
+        success: false,
+        message: `Cannot delete category — it still has ${itemCount} menu item(s). Move or delete them first.`,
+      });
+    }
+
     const category = await Category.findOneAndDelete({
       _id: id,
       venueId: venueId,
