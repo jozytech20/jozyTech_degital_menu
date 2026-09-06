@@ -36,6 +36,16 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
+/* ── brand palette (matching sidebar oklch tokens) ── */
+const BRAND = {
+  deep: "oklch(0.25 0.08 250)",
+  mid: "oklch(0.35 0.08 250)",
+  accent: "oklch(0.50 0.10 250)",
+  bright: "oklch(0.65 0.15 250)",
+  pale: "oklch(0.92 0.03 250)",
+  surface: "oklch(0.97 0.01 250)",
+};
+
 function OwnerMenuItems() {
   const [items, setItems] = useState<OwnerMenuItem[]>([]);
   const [categories, setCategories] = useState<OwnerCategory[]>([]);
@@ -124,27 +134,38 @@ function OwnerMenuItems() {
     return categories.find((c) => c._id === categoryId)?.name ?? "Unknown";
   };
 
+  /* ── Loading state ── */
   if (loading)
     return (
       <div className="flex items-center justify-center py-32">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 className="size-8 animate-spin text-gray-400" />
-          <p className="text-sm text-gray-500">Loading menu items...</p>
+          <div
+            className="w-12 h-12 rounded-xl flex items-center justify-center animate-pulse"
+            style={{ background: BRAND.pale }}
+          >
+            <Loader2 className="size-6 animate-spin" style={{ color: BRAND.bright }} />
+          </div>
+          <p className="text-sm text-gray-400 font-medium">Loading menu items…</p>
         </div>
       </div>
     );
 
+  /* ── Error state ── */
   if (error)
     return (
       <div className="flex items-center justify-center py-32">
-        <div className="text-center space-y-3">
-          <div className="w-12 h-12 rounded-full bg-red-100 mx-auto flex items-center justify-center">
-            <UtensilsCrossed className="size-6 text-red-500" />
+        <div className="text-center space-y-4">
+          <div
+            className="w-14 h-14 rounded-2xl mx-auto flex items-center justify-center"
+            style={{ background: "oklch(0.95 0.03 25)" }}
+          >
+            <UtensilsCrossed className="size-6" style={{ color: "oklch(0.55 0.20 25)" }} />
           </div>
-          <p className="text-gray-900 font-medium">{error}</p>
+          <p className="text-gray-900 font-semibold">{error}</p>
           <button
             onClick={fetchData}
-            className="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer"
+            className="inline-flex items-center gap-2 text-sm font-medium px-5 py-2.5 rounded-xl border transition-all cursor-pointer hover:-translate-y-0.5 hover:shadow-md"
+            style={{ borderColor: "oklch(0.88 0.02 250)", color: BRAND.deep }}
           >
             <RefreshCw className="size-3.5" />
             Try again
@@ -158,85 +179,131 @@ function OwnerMenuItems() {
       label: "Total Items",
       value: totalItems,
       icon: UtensilsCrossed,
-      color: "text-blue-600",
-      bg: "bg-blue-50",
+      gradient: `linear-gradient(135deg, oklch(0.55 0.15 250), oklch(0.45 0.12 260))`,
     },
     {
       label: "Available",
       value: availableItems,
       icon: CheckCircle2,
-      color: "text-green-600",
-      bg: "bg-green-50",
+      gradient: `linear-gradient(135deg, oklch(0.55 0.16 155), oklch(0.45 0.13 165))`,
     },
     {
       label: "Unavailable",
       value: unavailableItems,
       icon: XCircle,
-      color: "text-amber-600",
-      bg: "bg-amber-50",
+      gradient: `linear-gradient(135deg, oklch(0.65 0.16 80), oklch(0.55 0.14 70))`,
     },
   ];
 
   return (
-    <div className="space-y-6 sm:p-6 max-w-7xl mx-auto">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-sm text-gray-500 mb-1">Dashboard &gt; Menu Items</p>
-          <h1 className="text-lg font-bold text-gray-900">
-            Menu Item Management
-          </h1>
-        </div>
-        <button
-          onClick={openCreate}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-gray-900 text-white text-sm font-medium hover:bg-gray-800 transition-colors cursor-pointer"
-        >
-          <Plus className="size-4" />
-          Add Menu Item
-        </button>
-      </div>
+    <div
+      className="space-y-6 sm:p-6 max-w-7xl mx-auto min-h-screen"
+      style={{ background: BRAND.surface }}
+    >
+      {/* ── Header ── */}
+      <div
+        className="rounded-2xl p-6 sm:p-8 relative overflow-hidden"
+        style={{
+          background: `linear-gradient(135deg, ${BRAND.deep}, oklch(0.30 0.10 260))`,
+        }}
+      >
+        {/* decorative shapes */}
+        <div
+          className="absolute -top-16 -right-16 w-56 h-56 rounded-full opacity-[0.08]"
+          style={{ background: BRAND.bright }}
+        />
+        <div
+          className="absolute -bottom-10 -left-10 w-40 h-40 rounded-full opacity-[0.06]"
+          style={{ background: BRAND.accent }}
+        />
 
-      {/* Stat cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {statCards.map((stat) => (
-          <div
-            key={stat.label}
-            className="bg-white border border-gray-200 rounded-xl p-5 flex items-center gap-4 shadow-sm"
-          >
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="flex items-center gap-3">
             <div
-              className={`w-11 h-11 rounded-lg ${stat.bg} flex items-center justify-center shrink-0`}
+              className="w-10 h-10 rounded-xl flex items-center justify-center"
+              style={{ background: BRAND.mid }}
             >
-              <stat.icon className={`size-5 ${stat.color}`} />
+              <UtensilsCrossed className="size-5 text-white/80" />
             </div>
             <div>
-              <p className="text-sm text-gray-500">{stat.label}</p>
-              <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+              <p className="text-white/40 text-xs font-medium uppercase tracking-wider">
+                Dashboard &gt; Menu Items
+              </p>
+              <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+                Menu Item Management
+              </h1>
+            </div>
+          </div>
+
+          <button
+            onClick={openCreate}
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all cursor-pointer hover:-translate-y-0.5 hover:shadow-lg"
+            style={{
+              background: BRAND.bright,
+              color: "white",
+            }}
+          >
+            <Plus className="size-4" />
+            Add Menu Item
+          </button>
+        </div>
+      </div>
+
+      {/* ── Stat cards ── */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {statCards.map((stat, idx) => (
+          <div
+            key={stat.label}
+            className="group relative rounded-2xl p-5 text-white overflow-hidden cursor-default transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+            style={{
+              background: stat.gradient,
+              animationDelay: `${idx * 80}ms`,
+            }}
+          >
+            <div className="absolute inset-0 bg-white/0 group-hover:bg-white/[0.06] transition-colors duration-300" />
+            <div className="relative z-10 flex items-start justify-between">
+              <div className="space-y-2">
+                <p className="text-white/70 text-sm font-medium">{stat.label}</p>
+                <p className="text-3xl font-bold tracking-tight">{stat.value}</p>
+              </div>
+              <div
+                className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110"
+                style={{ background: "rgba(255,255,255,0.15)" }}
+              >
+                <stat.icon className="size-5 text-white" />
+              </div>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Table */}
-      <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+      {/* ── Table ── */}
+      <div
+        className="rounded-2xl border overflow-hidden transition-shadow duration-300 hover:shadow-lg"
+        style={{
+          background: "white",
+          borderColor: "oklch(0.92 0.01 250)",
+        }}
+      >
         <Table>
           <TableHeader>
-            <TableRow className="bg-gray-50/80">
-              <TableHead className="font-semibold text-gray-600">
-                Image
-              </TableHead>
-              <TableHead className="font-semibold text-gray-600">
-                Name
-              </TableHead>
-              <TableHead className="font-semibold text-gray-600">
-                Category
-              </TableHead>
-              <TableHead className="font-semibold text-gray-600">
-                Price
-              </TableHead>
-              <TableHead className="font-semibold text-gray-600">
-                Status
-              </TableHead>
-              <TableHead className="text-right font-semibold text-gray-600">
+            <TableRow
+              className="border-b"
+              style={{ background: BRAND.pale, borderColor: "oklch(0.90 0.02 250)" }}
+            >
+              {["Image", "Name", "Category", "Price", "Status"].map((h) => (
+                <TableHead
+                  key={h}
+                  className="font-semibold text-xs uppercase tracking-wider"
+                  style={{ color: "oklch(0.45 0.05 250)" }}
+                >
+                  {h}
+                </TableHead>
+              ))}
+              <TableHead
+                className="text-right font-semibold text-xs uppercase tracking-wider"
+                style={{ color: "oklch(0.45 0.05 250)" }}
+              >
                 Actions
               </TableHead>
             </TableRow>
@@ -244,16 +311,20 @@ function OwnerMenuItems() {
           <TableBody>
             {items.length === 0 ? (
               <TableRow>
-                <TableCell
-                  colSpan={6}
-                  className="text-center text-gray-500 py-12"
-                >
-                  <div className="flex flex-col items-center gap-2">
-                    <UtensilsCrossed className="size-8 text-gray-300" />
-                    <p className="text-sm">No menu items yet</p>
-                    <p className="text-xs text-gray-400">
-                      Click "Add Menu Item" to get started
-                    </p>
+                <TableCell colSpan={6} className="text-center py-16">
+                  <div className="flex flex-col items-center gap-3">
+                    <div
+                      className="w-14 h-14 rounded-2xl flex items-center justify-center"
+                      style={{ background: BRAND.pale }}
+                    >
+                      <UtensilsCrossed className="size-6" style={{ color: BRAND.accent }} />
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-sm font-medium text-gray-600">No menu items yet</p>
+                      <p className="text-xs text-gray-400">
+                        Click "Add Menu Item" to get started
+                      </p>
+                    </div>
                   </div>
                 </TableCell>
               </TableRow>
@@ -261,58 +332,106 @@ function OwnerMenuItems() {
               items.map((item) => (
                 <TableRow
                   key={item._id}
-                  className="hover:bg-gray-50/50 transition-colors"
+                  className="group transition-colors duration-200 border-b"
+                  style={{ borderColor: "oklch(0.95 0.005 250)" }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.background = BRAND.pale;
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.background = "";
+                  }}
                 >
+                  {/* Image – larger */}
                   <TableCell>
                     {item.image ? (
                       <img
                         src={item.image}
                         alt={item.name}
-                        className="w-10 h-10 rounded-lg object-cover border border-gray-100"
+                        className="w-14 h-14 rounded-xl object-cover ring-1 ring-black/5 transition-transform duration-300 group-hover:scale-105"
                       />
                     ) : (
-                      <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center">
-                        <ImageOff className="size-4 text-gray-400" />
+                      <div
+                        className="w-14 h-14 rounded-xl flex items-center justify-center"
+                        style={{ background: "oklch(0.95 0.01 250)" }}
+                      >
+                        <ImageOff className="size-5 text-gray-300" />
                       </div>
                     )}
                   </TableCell>
-                  <TableCell className="font-medium text-gray-900">
+
+                  {/* Name */}
+                  <TableCell className="font-semibold text-gray-900">
                     {item.name}
                   </TableCell>
-                  <TableCell className="text-gray-600">
-                    {getCategoryName(item.categoryId)}
-                  </TableCell>
-                  <TableCell className="text-gray-600">
-                    {item.price}
-                  </TableCell>
+
+                  {/* Category */}
                   <TableCell>
                     <span
-                      className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium ${item.isAvailable
-                        ? "bg-green-100 text-green-700"
-                        : "bg-gray-100 text-gray-600"
-                        }`}
+                      className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-medium"
+                      style={{
+                        background: BRAND.pale,
+                        color: "oklch(0.40 0.08 250)",
+                      }}
+                    >
+                      {getCategoryName(item.categoryId)}
+                    </span>
+                  </TableCell>
+
+                  {/* Price */}
+                  <TableCell>
+                    <span className="font-semibold text-gray-800">{item.price}</span>
+                  </TableCell>
+
+                  {/* Status */}
+                  <TableCell>
+                    <span
+                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold"
+                      style={
+                        item.isAvailable
+                          ? {
+                            background: "oklch(0.95 0.04 155)",
+                            color: "oklch(0.40 0.12 155)",
+                          }
+                          : {
+                            background: "oklch(0.95 0.01 250)",
+                            color: "oklch(0.50 0 0)",
+                          }
+                      }
                     >
                       <span
-                        className={`w-1.5 h-1.5 rounded-full ${item.isAvailable
-                          ? "bg-green-500"
-                          : "bg-gray-400"
-                          }`}
+                        className="w-1.5 h-1.5 rounded-full"
+                        style={{
+                          background: item.isAvailable
+                            ? "oklch(0.55 0.16 155)"
+                            : "oklch(0.70 0 0)",
+                        }}
                       />
                       {item.isAvailable ? "Available" : "Unavailable"}
                     </span>
                   </TableCell>
+
+                  {/* Actions */}
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end gap-1">
                       <button
                         onClick={() => openEdit(item)}
-                        className="p-2 rounded-lg text-gray-500 hover:text-blue-600 hover:bg-blue-50 transition-colors cursor-pointer"
+                        className="p-2 rounded-xl transition-all duration-200 cursor-pointer hover:-translate-y-0.5"
+                        style={{ color: "oklch(0.55 0.05 250)" }}
+                        onMouseEnter={(e) => {
+                          (e.currentTarget as HTMLElement).style.background = BRAND.pale;
+                          (e.currentTarget as HTMLElement).style.color = BRAND.bright;
+                        }}
+                        onMouseLeave={(e) => {
+                          (e.currentTarget as HTMLElement).style.background = "";
+                          (e.currentTarget as HTMLElement).style.color = "oklch(0.55 0.05 250)";
+                        }}
                         aria-label={`Edit ${item.name}`}
                       >
                         <Pencil size={15} />
                       </button>
                       <button
                         onClick={() => setDeleteTarget(item)}
-                        className="p-2 rounded-lg text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+                        className="p-2 rounded-xl text-gray-400 hover:text-red-500 hover:bg-red-50 transition-all duration-200 cursor-pointer hover:-translate-y-0.5"
                         aria-label={`Delete ${item.name}`}
                       >
                         <Trash size={15} />

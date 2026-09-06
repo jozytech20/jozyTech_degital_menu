@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import {
   Sidebar,
   SidebarContent,
@@ -23,9 +23,9 @@ import {
 
 
 function OwnerSidebar() {
-
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
+  const { pathname } = useLocation();
 
   const handleLogout = () => {
     logout();
@@ -44,12 +44,16 @@ function OwnerSidebar() {
             <SidebarMenu className="gap-y-1 mt-2">
               <SidebarMenuItem>
                 <SidebarMenuButton
-                  render={<NavLink to="/dashboard/owner/dashboard" end />}
+                  isActive={pathname === "/dashboard/owner"}
+                  render={<NavLink to="/dashboard/owner" end />}
                 >
-                  <LayoutDashboard color="#ffffff" className="size-4" />
+                  <LayoutDashboard className="size-4" />
                   Dashboard
                 </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
                 <SidebarMenuButton
+                  isActive={pathname.startsWith("/dashboard/owner/categories")}
                   render={<NavLink to="/dashboard/owner/categories" />}
                 >
                   <FolderTree className="size-4" />
@@ -58,6 +62,7 @@ function OwnerSidebar() {
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton
+                  isActive={pathname.startsWith("/dashboard/owner/menu-items")}
                   render={<NavLink to="/dashboard/owner/menu-items" />}
                 >
                   <UtensilsCrossed className="size-4" />
@@ -66,9 +71,10 @@ function OwnerSidebar() {
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton
-                  render={<NavLink to="/dashboard/owner" />}
+                  isActive={pathname === "/dashboard/owner/venue-setting"}
+                  render={<NavLink to="/dashboard/owner/venue-setting" end />}
                 >
-                  <Settings color="#ffffff" className="size-4" />
+                  <Settings className="size-4" />
                   Venue Setting
                 </SidebarMenuButton>
               </SidebarMenuItem>

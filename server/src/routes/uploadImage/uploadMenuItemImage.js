@@ -10,5 +10,4 @@ router.post("/upload-image", protect, authorize("owner", "superAdmin"),
   uploadMenuItemImage,
 );
 
-
 export default router;

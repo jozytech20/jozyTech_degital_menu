@@ -9,7 +9,7 @@ import { toast } from "@/components/ui/toast";
 import { AxiosError } from "axios";
 import type { OwnerVenue } from "@/types/ownerVenue";
 
-function ownerVenue() {
+function OwnerVenueSetting() {
   const [venue, setVenue] = useState<OwnerVenue | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -123,4 +123,4 @@ function ownerVenue() {
   );
 }
 
-export default ownerVenue;
+export default OwnerVenueSetting;

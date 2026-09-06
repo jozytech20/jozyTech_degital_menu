@@ -12,7 +12,8 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
 
       const isAuthCheck = error.config?.url?.includes("/auth/me");
-      if (!isAuthCheck) {
+      const isLoginAttempt = error.config?.url?.includes("/auth/login");
+      if (!isAuthCheck && !isLoginAttempt) {
         api.post("/auth/logout").catch(() => { });
         useAuthStore.getState().logout();
         window.location.href = "/login";

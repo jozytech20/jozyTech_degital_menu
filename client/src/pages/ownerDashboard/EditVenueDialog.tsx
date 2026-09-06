@@ -45,6 +45,8 @@ function EditVenueDialog({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [confirmingSlug, setConfirmingSlug] = useState(false);
+  const [qrCodeUrl, setQrCodeUrl] = useState("");
+  const [uploadingQr, setUploadingQr] = useState(false);
 
   useEffect(() => {
     if (venue) {
@@ -57,6 +59,7 @@ function EditVenueDialog({
       setPrimaryColor(venue.branding.theme.primaryColor);
       setSecondaryColor(venue.branding.theme.secondaryColor);
       setConfirmingSlug(false);
+      setQrCodeUrl(venue.branding.qrCodeUrl ?? "");
     }
   }, [venue]);
 
@@ -76,6 +79,7 @@ function EditVenueDialog({
         website,
         status,
         branding: {
+          qrCodeUrl,
           theme: {
             primaryColor,
             secondaryColor,
@@ -102,9 +106,31 @@ function EditVenueDialog({
     }
   };
 
+  const handleQrUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingQr(true);
+    setError("");
+
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+      const response = await api.post("/owner/upload-image", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      setQrCodeUrl(response.data.data.url);
+    } catch (err) {
+      setError("QR code upload failed");
+    } finally {
+      setUploadingQr(false);
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>Edit Venue</DialogTitle>
         </DialogHeader>
@@ -198,6 +224,14 @@ function EditVenueDialog({
                     onChange={(e) => setSecondaryColor(e.target.value)}
                   />
                 </div>
+                <div>
+                  <Label htmlFor="qrCode">QR Code</Label>
+                  <Input id="qrCode" type="file" accept="image/*" onChange={handleQrUpload} />
+                  {uploadingQr && <p className="text-xs text-gray-500 mt-1">Uploading...</p>}
+                  {qrCodeUrl && !uploadingQr && (
+                    <img src={qrCodeUrl} alt="QR Code preview" className="w-24 h-24 rounded object-cover mt-2 border" />
+                  )}
+                </div>
               </div>
             </div>
 
@@ -205,7 +239,7 @@ function EditVenueDialog({
               <Button variant="outline" onClick={() => onOpenChange(false)}>
                 Cancel
               </Button>
-              <Button onClick={handleSaveClick} disabled={saving}>
+              <Button onClick={handleSaveClick} disabled={saving || uploadingQr}>
                 {saving ? "Saving..." : "Save Changes"}
               </Button>
             </DialogFooter>

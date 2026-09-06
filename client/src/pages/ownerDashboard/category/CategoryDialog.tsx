@@ -12,6 +12,15 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import api from "../../../lib/api";
 import type { OwnerCategory } from "../../../types/category";
+import { ImageOff, Loader2, Upload, Layers, PencilLine } from "lucide-react";
+
+/* ── brand palette ── */
+const BRAND = {
+    deep: "oklch(0.25 0.08 250)",
+    mid: "oklch(0.35 0.08 250)",
+    bright: "oklch(0.65 0.15 250)",
+    pale: "oklch(0.92 0.03 250)",
+};
 
 interface CategoryDialogProps {
     open: boolean;
@@ -95,49 +104,205 @@ function CategoryDialog({ open, onOpenChange, category, onSaved }: CategoryDialo
         }
     };
 
+    const isEdit = !!category;
+
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent>
-                <DialogHeader>
-                    <DialogTitle>{category ? "Edit Category" : "Add Category"}</DialogTitle>
-                </DialogHeader>
+            <DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-lg p-0">
+                {/* ── Branded header ── */}
+                <div
+                    className="relative overflow-hidden rounded-t-xl px-6 pt-6 pb-5"
+                    style={{
+                        background: `linear-gradient(135deg, ${BRAND.deep}, oklch(0.30 0.10 260))`,
+                    }}
+                >
+                    {/* decorative circle */}
+                    <div
+                        className="absolute -top-10 -right-10 w-32 h-32 rounded-full opacity-[0.08]"
+                        style={{ background: BRAND.bright }}
+                    />
 
-                {error && <p className="text-red-600 text-sm">{error}</p>}
+                    <DialogHeader className="relative z-10 gap-0">
+                        <div className="flex items-center gap-3">
+                            <div
+                                className="w-9 h-9 rounded-lg flex items-center justify-center"
+                                style={{ background: BRAND.mid }}
+                            >
+                                {isEdit ? (
+                                    <PencilLine className="size-4 text-white/80" />
+                                ) : (
+                                    <Layers className="size-4 text-white/80" />
+                                )}
+                            </div>
+                            <DialogTitle className="text-lg font-bold text-white">
+                                {isEdit ? "Edit Category" : "Add Category"}
+                            </DialogTitle>
+                        </div>
+                    </DialogHeader>
+                </div>
 
-                <div className="space-y-4">
-                    <div>
-                        <Label htmlFor="name">Name</Label>
-                        <Input id="name" value={name} onChange={(e) => setName(e.target.value)} />
+                {/* ── Body ── */}
+                <div className="px-6 pb-2 pt-1 space-y-5">
+                    {/* Error */}
+                    {error && (
+                        <div
+                            className="flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-medium"
+                            style={{
+                                background: "oklch(0.97 0.03 25)",
+                                color: "oklch(0.50 0.18 25)",
+                            }}
+                        >
+                            <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: "oklch(0.55 0.20 25)" }} />
+                            {error}
+                        </div>
+                    )}
+
+                    {/* Name */}
+                    <div className="space-y-1.5">
+                        <Label
+                            htmlFor="cat-name"
+                            className="text-sm font-semibold"
+                            style={{ color: "oklch(0.35 0.03 250)" }}
+                        >
+                            Name
+                        </Label>
+                        <Input
+                            id="cat-name"
+                            placeholder="e.g. Appetizers"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            className="h-11 rounded-xl"
+                            style={{ borderColor: "oklch(0.90 0.02 250)" }}
+                        />
                     </div>
 
-                    <div>
-                        <Label htmlFor="description">Description</Label>
-                        <Input id="description" value={description} onChange={(e) => setDescription(e.target.value)} />
+                    {/* Description */}
+                    <div className="space-y-1.5">
+                        <Label
+                            htmlFor="cat-desc"
+                            className="text-sm font-semibold"
+                            style={{ color: "oklch(0.35 0.03 250)" }}
+                        >
+                            Description
+                        </Label>
+                        <Input
+                            id="cat-desc"
+                            placeholder="Brief description of this category"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            className="h-11 rounded-xl"
+                            style={{ borderColor: "oklch(0.90 0.02 250)" }}
+                        />
                     </div>
 
-                    <div>
-                        <Label htmlFor="image">Image</Label>
-                        <Input id="image" type="file" accept="image/*" onChange={handleFileChange} />
-                        {uploading && <p className="text-xs text-gray-500 mt-1">Uploading...</p>}
-                        {image && !uploading && (
-                            <img src={image} alt="Preview" className="w-16 h-16 rounded object-cover mt-2" />
-                        )}
+                    {/* Image upload */}
+                    <div className="space-y-2">
+                        <Label
+                            className="text-sm font-semibold"
+                            style={{ color: "oklch(0.35 0.03 250)" }}
+                        >
+                            Image
+                        </Label>
+
+                        <div className="flex items-start gap-4">
+                            {/* Preview */}
+                            <div
+                                className="w-20 h-20 rounded-xl shrink-0 overflow-hidden flex items-center justify-center ring-1"
+                                style={{
+                                    background: image ? "transparent" : BRAND.pale,
+                                    ringColor: "oklch(0.90 0.02 250)",
+                                }}
+                            >
+                                {uploading ? (
+                                    <Loader2 className="size-5 animate-spin" style={{ color: BRAND.bright }} />
+                                ) : image ? (
+                                    <img src={image} alt="Preview" className="w-full h-full object-cover" />
+                                ) : (
+                                    <ImageOff className="size-5" style={{ color: "oklch(0.72 0.02 250)" }} />
+                                )}
+                            </div>
+
+                            {/* Upload area */}
+                            <label
+                                className="flex-1 flex flex-col items-center justify-center gap-1.5 rounded-xl border-2 border-dashed py-4 px-3 cursor-pointer transition-colors duration-200 hover:border-solid"
+                                style={{
+                                    borderColor: "oklch(0.88 0.03 250)",
+                                    background: "oklch(0.98 0.005 250)",
+                                }}
+                                onMouseEnter={(e) => {
+                                    (e.currentTarget as HTMLElement).style.borderColor = BRAND.bright;
+                                    (e.currentTarget as HTMLElement).style.background = BRAND.pale;
+                                }}
+                                onMouseLeave={(e) => {
+                                    (e.currentTarget as HTMLElement).style.borderColor = "oklch(0.88 0.03 250)";
+                                    (e.currentTarget as HTMLElement).style.background = "oklch(0.98 0.005 250)";
+                                }}
+                            >
+                                <Upload className="size-4" style={{ color: BRAND.bright }} />
+                                <span className="text-xs font-medium" style={{ color: BRAND.bright }}>
+                                    {uploading ? "Uploading…" : "Click to upload"}
+                                </span>
+                                <span className="text-[10px] text-gray-400">PNG, JPG, WEBP</span>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleFileChange}
+                                    className="sr-only"
+                                    disabled={uploading}
+                                />
+                            </label>
+                        </div>
                     </div>
 
-                    {category && (
-                        <div className="flex items-center justify-between">
-                            <Label htmlFor="isActive">Active</Label>
-                            <Switch id="isActive" checked={isActive} onCheckedChange={setIsActive} />
+                    {/* Active toggle (edit only) */}
+                    {isEdit && (
+                        <div
+                            className="flex items-center justify-between rounded-xl px-4 py-3"
+                            style={{ background: BRAND.pale }}
+                        >
+                            <div className="space-y-0.5">
+                                <Label
+                                    htmlFor="cat-active"
+                                    className="text-sm font-semibold cursor-pointer"
+                                    style={{ color: "oklch(0.30 0.05 250)" }}
+                                >
+                                    Active
+                                </Label>
+                                <p className="text-xs text-gray-400">
+                                    Inactive categories are hidden from the public menu
+                                </p>
+                            </div>
+                            <Switch id="cat-active" checked={isActive} onCheckedChange={setIsActive} />
                         </div>
                     )}
                 </div>
 
-                <DialogFooter>
-                    <Button variant="outline" onClick={() => onOpenChange(false)}>
+                {/* ── Footer ── */}
+                <DialogFooter className="px-6 pb-6 pt-2 gap-2">
+                    <Button
+                        variant="outline"
+                        onClick={() => onOpenChange(false)}
+                        className="rounded-xl h-10 cursor-pointer"
+                        style={{ borderColor: "oklch(0.90 0.02 250)" }}
+                    >
                         Cancel
                     </Button>
-                    <Button onClick={handleSave} disabled={saving || uploading}>
-                        {saving ? "Saving..." : category ? "Save Changes" : "Create Category"}
+                    <Button
+                        onClick={handleSave}
+                        disabled={saving || uploading}
+                        className="rounded-xl h-10 font-semibold cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md"
+                        style={{ background: BRAND.deep }}
+                    >
+                        {saving ? (
+                            <span className="flex items-center gap-2">
+                                <Loader2 className="size-4 animate-spin" />
+                                Saving…
+                            </span>
+                        ) : isEdit ? (
+                            "Save Changes"
+                        ) : (
+                            "Create Category"
+                        )}
                     </Button>
                 </DialogFooter>
             </DialogContent>
