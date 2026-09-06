@@ -1,4 +1,4 @@
-import Venue from "../../model/Venue";
+import Venue from "../../model/Venue.js";
 
 
 export const getMyVenue = async (req, res) => {

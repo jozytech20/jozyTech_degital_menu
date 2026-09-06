@@ -1,12 +1,13 @@
 // src/pages/owner/VenueSettings.tsx
 import { useEffect, useState } from "react";
 import api from "../../lib/api";
-import type { OwnerVenue } from "../../types/venue";
+// import type { OwnerVenue } from "../../types/venue";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/toast";
 import { AxiosError } from "axios";
+import type { OwnerVenue } from "@/types/ownerVenue";
 
 function ownerVenue() {
   const [venue, setVenue] = useState<OwnerVenue | null>(null);
@@ -25,13 +26,14 @@ function ownerVenue() {
       try {
         const response = await api.get<{ data: OwnerVenue }>("/owner/venue");
         const v = response.data.data;
+        console.log(v);
+
         setVenue(v);
         setName(v.name);
         setEmail(v.email);
         setPhone(v.phone);
         setWebsite(v.website ?? "");
-        setPrimaryColor(v.branding.theme.primaryColor);
-        setSecondaryColor(v.branding.theme.secondaryColor);
+
       } catch (err) {
         console.error(err);
       } finally {
