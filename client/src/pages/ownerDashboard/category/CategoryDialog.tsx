@@ -16,7 +16,7 @@ import type { OwnerCategory } from "../../../types/category";
 interface CategoryDialogProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
-    category: OwnerCategory | null; // null = create mode
+    category: OwnerCategory | null;
     onSaved: (category: OwnerCategory) => void;
 }
 
