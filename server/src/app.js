@@ -6,6 +6,7 @@ import venueRoutes from "./routes/admin/venue-routes.js"
 import userRoutes from "./routes/user/user-routes.js"
 import categoryRoutes from "./routes/owner/category-routes.js";
 import menuItemRoutes from "./routes/owner/menu-item-routes.js"
+import ownerVenueRoutes from "./routes/owner/menu-item-routes.js"
 import publicRoutes from "./routes/public/public-routes.js";
 import imageRoutes from "./routes/uploadImage/uploadMenuItemImage.js";
 
@@ -38,13 +39,14 @@ app.use("/api/admin", venueRoutes)
 app.use("/api/admin", userRoutes)
 app.use("/api/owner", categoryRoutes)
 app.use("/api/owner", menuItemRoutes)
+app.use("/api/owner", ownerVenueRoutes)
 app.use("/api/owner", imageRoutes)
 app.use("/api/public", publicRoutes)
 
-app.get("/api/health", (req, res)=>{
+app.get("/api/health", (req, res) => {
   res.status(200).json({
-    success : true,
-    message : "success"
+    success: true,
+    message: "success"
   })
 })
 
