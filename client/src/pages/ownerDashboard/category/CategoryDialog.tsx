@@ -1,4 +1,3 @@
-// src/components/owner/CategoryDialog.tsx
 import { useState, useEffect } from "react";
 import {
     Dialog,

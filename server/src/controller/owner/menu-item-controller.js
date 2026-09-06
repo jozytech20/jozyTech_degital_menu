@@ -2,8 +2,8 @@ import Category from "../../model/Category.js";
 import MenuItem from "../../model/MenuItem.js";
 
 
-export const createMenuItem = async(req, res) =>{
- try {
+export const createMenuItem = async (req, res) => {
+  try {
     const venueId = req.user.venueId;
     const createdBy = req.user.id
     const {
@@ -17,7 +17,7 @@ export const createMenuItem = async(req, res) =>{
       isFeatured,
     } = req.body;
 
-    if (!categoryId || !name || !price ) {
+    if (!categoryId || !name || !price) {
       return res.status(400).json({
         success: false,
         message: "Invalid credentials!",
@@ -51,16 +51,16 @@ export const createMenuItem = async(req, res) =>{
     });
 
 
- } catch (error) {
-  console.error(error);
-  res.status(500).json({
-    success: false,
-    message: "Internal server error!",
-  });
- }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error!",
+    });
+  }
 }
 
-export const fetchMenuItems = async(req, res)=>{
+export const fetchMenuItems = async (req, res) => {
   try {
     const venueId = req.user.venueId;
     const { search, categoryId } = req.query;
@@ -91,7 +91,7 @@ export const fetchMenuItems = async(req, res)=>{
   }
 }
 
-export const updateMenuItem = async (req, res)=>{
+export const updateMenuItem = async (req, res) => {
   try {
     const venueId = req.user.venueId;
     const id = req.params.id;
@@ -105,14 +105,14 @@ export const updateMenuItem = async (req, res)=>{
       isFeatured,
     } = req.body;
 
-    if(!id){
+    if (!id) {
       return res.status(400).json({
         success: false,
         message: "Invalid credentials!",
       });
     }
 
-    const menuItem = await MenuItem.findOne({ _id : id, venueId})
+    const menuItem = await MenuItem.findOne({ _id: id, venueId })
     if (!menuItem) {
       return res.status(404).json({
         success: false,
@@ -130,18 +130,19 @@ export const updateMenuItem = async (req, res)=>{
       menuItem.categoryId = categoryId;
     }
 
-    if(name) menuItem.name = name;
-    if(description) menuItem.description = description;
-    if(price) menuItem.price = price;
-    if(image) menuItem.image = image;
+    if (name) menuItem.name = name;
+    if (description) menuItem.description = description;
+    if (price) menuItem.price = price;
+    if (image) menuItem.image = image;
     if (isAvailable !== undefined) menuItem.isAvailable = isAvailable;
     if (isFeatured !== undefined) menuItem.isFeatured = isFeatured;
 
-     await menuItem.save();    
+    await menuItem.save();
 
     res.status(200).json({
       success: true,
       message: "menuItem successfully updated!",
+      data: menuItem,
     });
 
   } catch (error) {
@@ -153,18 +154,18 @@ export const updateMenuItem = async (req, res)=>{
   }
 }
 
-export const deleteMenuItem = async (req, res)=>{
+export const deleteMenuItem = async (req, res) => {
   try {
     const id = req.params.id
     const venueId = req.user.venueId;
 
-    if(!id){
+    if (!id) {
       return res.status(400).json({
-      success : false,
-      message : "Invalid credentials!"
-    })
+        success: false,
+        message: "Invalid credentials!"
+      })
     }
-    
+
     const menuItem = await MenuItem.findOneAndDelete({ _id: id, venueId })
     if (!menuItem) {
       return res.status(404).json({
@@ -181,8 +182,8 @@ export const deleteMenuItem = async (req, res)=>{
   } catch (error) {
     console.error(error);
     res.status(500).json({
-      success : false,
-      message : "Internal server error!"
+      success: false,
+      message: "Internal server error!"
     })
   }
 }
