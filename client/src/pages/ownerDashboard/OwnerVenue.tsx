@@ -26,7 +26,6 @@ function ownerVenue() {
       try {
         const response = await api.get<{ data: OwnerVenue }>("/owner/venue");
         const v = response.data.data;
-        console.log(v);
 
         setVenue(v);
         setName(v.name);

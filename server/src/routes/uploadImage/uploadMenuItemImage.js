@@ -5,7 +5,7 @@ import { handleUpload } from "../../middlewares/uploadImage-middleware.js";
 
 const router = express.Router();
 
-router.post("/upload-image",protect ,authorize ("owner"),
+router.post("/upload-image", protect, authorize("owner", "superAdmin"),
   handleUpload,
   uploadMenuItemImage,
 );

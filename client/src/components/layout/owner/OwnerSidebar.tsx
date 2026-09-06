@@ -13,7 +13,7 @@ import {
   SidebarSeparator,
 } from "@/components/ui/sidebar";
 import { useAuthStore } from "@/store/authStore";
-import { FolderTree, UtensilsCrossed, Store, LogOut, ChevronUp } from "lucide-react";
+import { FolderTree, UtensilsCrossed, LogOut, ChevronUp, Settings, LayoutDashboard } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -41,16 +41,14 @@ function OwnerSidebar() {
         <SidebarGroup>
           <SidebarGroupLabel>Management</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="gap-y-1 mt-2">
               <SidebarMenuItem>
                 <SidebarMenuButton
-                  render={<NavLink to="/dashboard/owner" end />}
+                  render={<NavLink to="/dashboard/owner/dashboard" end />}
                 >
-                  <Store className="size-4" />
-                  Venue
+                  <LayoutDashboard color="#ffffff" className="size-4" />
+                  Dashboard
                 </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
                 <SidebarMenuButton
                   render={<NavLink to="/dashboard/owner/categories" />}
                 >
@@ -64,6 +62,14 @@ function OwnerSidebar() {
                 >
                   <UtensilsCrossed className="size-4" />
                   Menu Items
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  render={<NavLink to="/dashboard/owner" />}
+                >
+                  <Settings color="#ffffff" className="size-4" />
+                  Venue Setting
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>

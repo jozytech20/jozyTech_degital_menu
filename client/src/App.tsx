@@ -12,6 +12,7 @@ import OwnerCategories from "./pages/ownerDashboard/category/OwnerCategories";
 import OwnerMenuItems from "./pages/ownerDashboard/menuItems/OwnerMenuItems";
 import AdminLayout from "./components/layout/admin/AdminLayout";
 import OwnerLayout from "./components/layout/owner/OwnerLayout";
+import Dashboard from "./components/layout/owner/Dashboard";
 
 function App() {
   const setUser = useAuthStore((state) => state.setUser);
@@ -61,6 +62,7 @@ function App() {
           }
         >
           <Route index element={<OwnerVenue />} />
+          <Route path="dashboard" element={<Dashboard />} />
           <Route path="categories" element={<OwnerCategories />} />
           <Route path="menu-items" element={<OwnerMenuItems />} />
           <Route path="*" element={<Navigate to="/dashboard/owner" replace />} />

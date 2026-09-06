@@ -33,10 +33,15 @@ function Login() {
           ? "/dashboard/admin"
           : "/dashboard/owner",
       );
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      setError("Invalid email or password");
-    } finally {
+      if (err.response?.status === 429) {
+        setError("Too many login attempts. Please try again in a few minutes.");
+      } else {
+        setError("Invalid email or password");
+      }
+    }
+    finally {
       setLoading(false);
     }
   };
