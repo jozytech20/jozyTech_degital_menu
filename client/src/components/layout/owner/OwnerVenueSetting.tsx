@@ -1,13 +1,11 @@
-// src/pages/owner/VenueSettings.tsx
 import { useEffect, useState } from "react";
-import api from "../../lib/api";
-// import type { OwnerVenue } from "../../types/venue";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/toast";
 import { AxiosError } from "axios";
 import type { OwnerVenue } from "@/types/ownerVenue";
+import api from "@/lib/api";
 
 function OwnerVenueSetting() {
     const [venue, setVenue] = useState<OwnerVenue | null>(null);

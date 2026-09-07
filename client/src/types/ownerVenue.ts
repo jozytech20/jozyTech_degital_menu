@@ -8,7 +8,7 @@ export interface OwnerVenue {
     status: "active" | "paused";
     branding: {
         logoUrl: string;
-        qrCodeUrl: string;
+        qrCodeUrl?: string;
         theme: {
             primaryColor: string;
             secondaryColor: string;
