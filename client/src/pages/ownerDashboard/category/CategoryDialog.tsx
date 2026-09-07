@@ -205,15 +205,12 @@ function CategoryDialog({ open, onOpenChange, category, onSaved }: CategoryDialo
                         </Label>
 
                         <div className="flex items-start gap-4">
-                            {/* Preview */}
                             <div
                                 className="w-20 h-20 rounded-xl shrink-0 overflow-hidden flex items-center justify-center ring-1"
-                                style={
-                                    {
-                                        background: image ? "transparent" : BRAND.pale,
-                                        "--tw-ring-color": "oklch(0.90 0.02 250)",
-                                    } as React.CSSProperties
-                                }
+                                style={{
+                                    background: image ? "transparent" : BRAND.pale,
+                                    "--tw-ring-color": "oklch(0.90 0.02 250)",
+                                } as React.CSSProperties}
                             >
                                 {uploading ? (
                                     <Loader2 className="size-5 animate-spin" style={{ color: BRAND.bright }} />
