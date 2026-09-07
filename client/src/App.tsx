@@ -12,7 +12,8 @@ import OwnerMenuItems from "./pages/ownerDashboard/menuItems/OwnerMenuItems";
 import AdminLayout from "./components/layout/admin/AdminLayout";
 import OwnerLayout from "./components/layout/owner/OwnerLayout";
 import Dashboard from "./components/layout/owner/Dashboard";
-import OwnerVenueSetting from "./pages/ownerDashboard/ownerVenueSetting";
+import OwnerVenueSetting from "./components/layout/owner/OwnerVenueSetting";
+
 
 
 function App() {

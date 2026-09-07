@@ -192,7 +192,7 @@ function MenuItemDialog({ open, onOpenChange, item, categories, onSaved }: MenuI
                         >
                             Category
                         </Label>
-                        <Select value={categoryId} onValueChange={setCategoryId}>
+                        <Select value={categoryId} onValueChange={(value) => setCategoryId(value ?? "")}>
                             <SelectTrigger
                                 className="h-11 rounded-xl"
                                 style={{ borderColor: "oklch(0.90 0.02 250)" }}
@@ -280,10 +280,12 @@ function MenuItemDialog({ open, onOpenChange, item, categories, onSaved }: MenuI
                             {/* Preview */}
                             <div
                                 className="w-20 h-20 rounded-xl shrink-0 overflow-hidden flex items-center justify-center ring-1"
-                                style={{
-                                    background: image ? "transparent" : BRAND.pale,
-                                    ringColor: "oklch(0.90 0.02 250)",
-                                }}
+                                style={
+                                    {
+                                        background: image ? "transparent" : BRAND.pale,
+                                        "--tw-ring-color": "oklch(0.90 0.02 250)",
+                                    } as React.CSSProperties
+                                }
                             >
                                 {uploading ? (
                                     <Loader2 className="size-5 animate-spin" style={{ color: BRAND.bright }} />

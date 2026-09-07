@@ -38,6 +38,7 @@ export interface AdminVenue {
   ownerId: string;
   branding: {
     logoUrl: string;
+    qrCodeUrl?: string;
     theme: {
       primaryColor: string;
       secondaryColor: string;
