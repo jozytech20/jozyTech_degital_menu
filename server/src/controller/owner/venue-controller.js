@@ -31,7 +31,7 @@ export const getMyVenue = async (req, res) => {
 export const updateMyVenue = async (req, res) => {
   try {
     const venueId = req.user.venueId;
-    const { email, phone, website, logoUrl } = req.body;
+    const { name, email, phone, website, logoUrl } = req.body;
 
     const venue = await Venue.findById(venueId);
     if (!venue) {
@@ -41,10 +41,11 @@ export const updateMyVenue = async (req, res) => {
       });
     }
 
+    if (name) venue.name = name;
     if (email) venue.email = email;
     if (phone) venue.phone = phone;
     if (website) venue.website = website;
-    if (logoUrl) venue.branding.logoUrl = logoUrl;
+    if (logoUrl !== undefined) venue.branding.logoUrl = logoUrl;
 
     await venue.save();
 
