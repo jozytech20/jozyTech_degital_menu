@@ -183,6 +183,7 @@ function Dashboard() {
                                 <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
                                     {venue?.name}
                                 </h1>
+                                <p className="text-white/50 text-">{venue.slug}.jozytech.com</p>
                                 <p className="text-white/50 text-sm">Venue Dashboard</p>
                             </div>
                         </div>
