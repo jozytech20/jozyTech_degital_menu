@@ -13,7 +13,6 @@ import AdminLayout from "./components/layout/admin/AdminLayout";
 import OwnerLayout from "./components/layout/owner/OwnerLayout";
 import Dashboard from "./components/layout/owner/Dashboard";
 import OwnerVenueSetting from "./components/layout/owner/OwnerVenueSetting";
-// import OwnerVenueSetting from "./components/layout/owner/OwnerVenueSetting";
 
 
 

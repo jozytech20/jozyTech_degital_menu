@@ -19,7 +19,7 @@ import type { OwnerCategory } from "@/types/category";
 import type { OwnerMenuItem } from "@/types/menuItems";
 import api from "@/lib/api";
 
-/* ── brand palette (matching sidebar oklch tokens) ── */
+
 const BRAND = {
     deep: "oklch(0.25 0.08 250)",
     mid: "oklch(0.35 0.08 250)",
@@ -129,7 +129,6 @@ function Dashboard() {
         },
     ];
 
-    /* ── custom tooltip for charts ── */
     const CustomTooltip = ({ active, payload, label }: any) => {
         if (!active || !payload?.length) return null;
         return (
@@ -183,7 +182,7 @@ function Dashboard() {
                                 <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
                                     {venue?.name}
                                 </h1>
-                                <p className="text-white/50 text-">{venue.slug}.jozytech.com</p>
+                                <p className="text-white/50 text-">{venue?.slug}.jozytech.com</p>
                                 <p className="text-white/50 text-sm">Venue Dashboard</p>
                             </div>
                         </div>
