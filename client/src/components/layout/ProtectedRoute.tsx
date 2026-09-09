@@ -12,9 +12,8 @@ function ProtectedRoute({ children, allowedRole }: ProtectedRouteProps) {
   const isLoading = useAuthStore((state) => state.isLoading);
   const [timedOut, setTimedOut] = useState(false);
 
-
   useEffect(() => {
-    const timer = setTimeout(() => setTimedOut(true), 10000); // 10s
+    const timer = setTimeout(() => setTimedOut(true), 10000);
     return () => clearTimeout(timer);
   }, []);
 
