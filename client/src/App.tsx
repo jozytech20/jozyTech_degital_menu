@@ -15,7 +15,6 @@ import Dashboard from "./components/layout/owner/Dashboard";
 import OwnerVenueSetting from "./components/layout/owner/OwnerVenueSetting";
 
 
-
 function App() {
   const setUser = useAuthStore((state) => state.setUser);
   const setIsLoading = useAuthStore((state) => state.setIsLoading);
@@ -36,7 +35,7 @@ function App() {
     };
 
     checkAuth();
-  }, []);
+  }, [setUser, setIsLoading]);
 
 
   return (
