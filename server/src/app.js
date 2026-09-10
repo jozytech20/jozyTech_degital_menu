@@ -13,35 +13,24 @@ import imageRoutes from "./routes/uploadImage/uploadMenuItemImage.js";
 
 const app = express();
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (
-        !origin ||
-        /\.?localhost:5173$/.test(origin) ||
-        origin === process.env.CLIENT_URL
-      ) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-  }),
-);
+const strictCors = cors({
+  origin: process.env.CLIENT_URL,
+  credentials: true
+});
 
 
 app.use(express.json());
 app.use(cookieParser());
 
-app.use("/api/auth", authRouter)
-app.use("/api/admin", venueRoutes)
-app.use("/api/admin", userRoutes)
-app.use("/api/owner", categoryRoutes)
-app.use("/api/owner", menuItemRoutes)
-app.use("/api/owner", ownerVenueRoutes)
-app.use("/api/owner", imageRoutes)
-app.use("/api/public", publicRoutes)
+app.use("/api/auth", strictCors, authRouter)
+app.use("/api/admin", strictCors, venueRoutes)
+app.use("/api/admin", strictCors, userRoutes)
+app.use("/api/owner", strictCors, categoryRoutes)
+app.use("/api/owner", strictCors, menuItemRoutes)
+app.use("/api/owner", strictCors, ownerVenueRoutes)
+app.use("/api/owner", strictCors, imageRoutes)
+
+app.use("/api/public", cors(), publicRoutes)
 
 app.get("/api/health", (req, res) => {
   res.status(200).json({
