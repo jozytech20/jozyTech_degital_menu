@@ -40,6 +40,10 @@ const menuItemSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    imagePublicId: {
+      type: String,
+      default: "",
+    },
     isAvailable: {
       type: Boolean,
       default: true,

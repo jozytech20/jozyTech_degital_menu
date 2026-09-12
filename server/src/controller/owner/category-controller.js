@@ -1,5 +1,6 @@
 import Category from "../../model/Category.js";
 import MenuItem from "../../model/MenuItem.js";
+import { deleteCloudinaryImage } from "../Image/deleteCloudinaryImage.js";
 
 
 export const createCategory = async (req, res) => {
@@ -60,7 +61,7 @@ export const updateCategory = async (req, res) => {
   try {
     const id = req.params.id;
     const venueId = req.user.venueId;
-    const { name, description, image, isActive } = req.body;
+    const { name, description, image, imagePublicId, isActive } = req.body;
 
     const category = await Category.findOne({ _id: id, venueId: venueId })
     if (!category) {
@@ -68,6 +69,12 @@ export const updateCategory = async (req, res) => {
         success: false,
         message: "category not found!"
       })
+    }
+
+    if (image && image !== category.image) {
+      await deleteCloudinaryImage(category.imagePublicId);
+      category.image = image;
+      category.imagePublicId = imagePublicId; // needs to be destructured from req.body too
     }
 
     if (name) category.name = name;
@@ -104,6 +111,8 @@ export const deleteCategory = async (req, res) => {
         message: `Cannot delete category — it still has ${itemCount} menu item(s). Move or delete them first.`,
       });
     }
+
+    await deleteCloudinaryImage(category.imagePublicId);
 
     const category = await Category.findOneAndDelete({
       _id: id,

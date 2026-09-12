@@ -15,11 +15,15 @@ const categorySchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      default : "",
+      default: "",
     },
     image: {
-      type : String,
-      default : "",
+      type: String,
+      default: "",
+    },
+    imagePublicId: {
+      type: String,
+      default: "",
     },
     sortOrder: {
       type: Number,

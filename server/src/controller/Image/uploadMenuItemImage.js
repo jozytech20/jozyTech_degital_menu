@@ -18,10 +18,15 @@ export const uploadMenuItemImage = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Image uploaded successfully",
-      data: { url: result.secure_url },
+      data: {
+        url: result.secure_url,
+        publicId: result.public_id,
+      },
     });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: "Internal server error!" });
   }
 };
+
+

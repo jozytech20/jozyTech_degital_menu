@@ -48,7 +48,15 @@ const venueSchema = new mongoose.Schema(
     },
     branding: {
       logoUrl: { type: String, default: "" },
+      logoPublicId: {
+        type: String,
+        default: "",
+      },
       qrCodeUrl: { type: String, default: "" },
+      qrCodePublicId: {
+        type: String,
+        default: "",
+      },
       theme: {
         primaryColor: {
           type: String,
