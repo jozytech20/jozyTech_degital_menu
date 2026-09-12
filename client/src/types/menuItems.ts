@@ -3,6 +3,7 @@ export interface OwnerMenuItem {
     categoryId: string;
     name: string;
     description: string;
+    imagePublicId?: string;
     price: number;
     image: string;
     isAvailable: boolean;
