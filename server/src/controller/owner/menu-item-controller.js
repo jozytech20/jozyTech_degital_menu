@@ -1,5 +1,6 @@
 import Category from "../../model/Category.js";
 import MenuItem from "../../model/MenuItem.js";
+import { deleteCloudinaryImage } from "../Image/deleteCloudinaryImage.js";
 
 
 export const createMenuItem = async (req, res) => {
@@ -13,6 +14,7 @@ export const createMenuItem = async (req, res) => {
       price,
       variants,
       image,
+      imagePublicId,
       isAvailable,
       isFeatured,
     } = req.body;
@@ -39,6 +41,7 @@ export const createMenuItem = async (req, res) => {
       price,
       variants,
       image,
+      imagePublicId,
       isAvailable,
       isFeatured,
       createdBy,
@@ -101,6 +104,7 @@ export const updateMenuItem = async (req, res) => {
       description,
       price,
       image,
+      imagePublicId,
       isAvailable,
       isFeatured,
     } = req.body;
@@ -130,10 +134,15 @@ export const updateMenuItem = async (req, res) => {
       menuItem.categoryId = categoryId;
     }
 
+    if (image && image !== menuItem.image) {
+      await deleteCloudinaryImage(menuItem.imagePublicId);
+      menuItem.image = image;
+      menuItem.imagePublicId = imagePublicId;
+    }
+
     if (name) menuItem.name = name;
     if (description) menuItem.description = description;
     if (price) menuItem.price = price;
-    if (image) menuItem.image = image;
     if (isAvailable !== undefined) menuItem.isAvailable = isAvailable;
     if (isFeatured !== undefined) menuItem.isFeatured = isFeatured;
 
@@ -173,6 +182,8 @@ export const deleteMenuItem = async (req, res) => {
         message: "menu item not found!",
       });
     }
+
+    await deleteCloudinaryImage(menuItem.imagePublicId);
 
     return res.status(200).json({
       success: true,

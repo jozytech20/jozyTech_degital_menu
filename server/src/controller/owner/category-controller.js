@@ -5,7 +5,7 @@ import { deleteCloudinaryImage } from "../Image/deleteCloudinaryImage.js";
 
 export const createCategory = async (req, res) => {
   try {
-    const { name, description, image } = req.body;
+    const { name, description, image, imagePublicId } = req.body;
     const id = req.user.venueId;
 
     if (!name) {
@@ -20,6 +20,7 @@ export const createCategory = async (req, res) => {
       name,
       description,
       image,
+      imagePublicId,
     });
 
     res.status(201).json({
@@ -74,12 +75,11 @@ export const updateCategory = async (req, res) => {
     if (image && image !== category.image) {
       await deleteCloudinaryImage(category.imagePublicId);
       category.image = image;
-      category.imagePublicId = imagePublicId; // needs to be destructured from req.body too
+      category.imagePublicId = imagePublicId;
     }
 
     if (name) category.name = name;
     if (description) category.description = description;
-    if (image) category.image = image;
     if (isActive !== undefined) category.isActive = isActive;
 
     await category.save();
@@ -112,7 +112,6 @@ export const deleteCategory = async (req, res) => {
       });
     }
 
-    await deleteCloudinaryImage(category.imagePublicId);
 
     const category = await Category.findOneAndDelete({
       _id: id,
@@ -124,6 +123,8 @@ export const deleteCategory = async (req, res) => {
         message: "category not found!",
       });
     }
+
+    await deleteCloudinaryImage(category.imagePublicId);
 
     res.status(200).json({
       success: true,

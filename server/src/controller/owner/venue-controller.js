@@ -1,4 +1,5 @@
 import Venue from "../../model/Venue.js";
+import { deleteCloudinaryImage } from "../Image/deleteCloudinaryImage.js";
 
 
 export const getMyVenue = async (req, res) => {
@@ -31,7 +32,7 @@ export const getMyVenue = async (req, res) => {
 export const updateMyVenue = async (req, res) => {
   try {
     const venueId = req.user.venueId;
-    const { name, email, phone, website, logoUrl } = req.body;
+    const { name, email, phone, website, logoUrl, logoPublicId } = req.body;
 
     const venue = await Venue.findById(venueId);
     if (!venue) {
@@ -41,11 +42,16 @@ export const updateMyVenue = async (req, res) => {
       });
     }
 
+    if (logoUrl && logoUrl !== venue.branding.logoUrl) {
+      await deleteCloudinaryImage(venue.branding.logoPublicId);
+      venue.branding.logoUrl = logoUrl;
+      venue.branding.logoPublicId = logoPublicId;
+    }
+
     if (name) venue.name = name;
     if (email) venue.email = email;
     if (phone) venue.phone = phone;
     if (website) venue.website = website;
-    if (logoUrl !== undefined) venue.branding.logoUrl = logoUrl;
 
     await venue.save();
 

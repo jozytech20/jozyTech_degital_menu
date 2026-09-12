@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import User from "../../model/User.js";
 import Venue from "../../model/Venue.js";
+import { deleteCloudinaryImage } from "../Image/deleteCloudinaryImage.js";
 
 
 
@@ -150,7 +151,7 @@ export const updateVenue = async (req, res) => {
       website,
       status,
       // subscription,  //obj
-      branding, //obj
+      branding,
     } = req.body;
 
     const venue = await Venue.findById(id);
@@ -188,12 +189,20 @@ export const updateVenue = async (req, res) => {
     if (status) venue.status = status;
 
     if (branding) {
-      if (branding.logoUrl) venue.branding.logoUrl = branding.logoUrl;
-      if (branding.theme?.primaryColor)
-        venue.branding.theme.primaryColor = branding.theme.primaryColor;
-      if (branding.theme?.secondaryColor)
-        venue.branding.theme.secondaryColor = branding.theme.secondaryColor;
-      if (branding.qrCodeUrl) venue.branding.qrCodeUrl = branding.qrCodeUrl;
+      if (branding.logoUrl && branding.logoUrl !== venue.branding.logoUrl) {
+        await deleteCloudinaryImage(venue.branding.logoPublicId);
+        venue.branding.logoUrl = branding.logoUrl;
+        venue.branding.logoPublicId = branding.logoPublicId;
+      }
+
+      if (branding.qrCodeUrl && branding.qrCodeUrl !== venue.branding.qrCodeUrl) {
+        await deleteCloudinaryImage(venue.branding.qrCodePublicId);
+        venue.branding.qrCodeUrl = branding.qrCodeUrl;
+        venue.branding.qrCodePublicId = branding.qrCodePublicId;
+      }
+
+      if (branding.theme?.primaryColor) venue.branding.theme.primaryColor = branding.theme.primaryColor;
+      if (branding.theme?.secondaryColor) venue.branding.theme.secondaryColor = branding.theme.secondaryColor;
     }
 
     await venue.save();
