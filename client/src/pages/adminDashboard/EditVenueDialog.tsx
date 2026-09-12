@@ -47,6 +47,7 @@ function EditVenueDialog({
   const [confirmingSlug, setConfirmingSlug] = useState(false);
   const [qrCodeUrl, setQrCodeUrl] = useState("");
   const [uploadingQr, setUploadingQr] = useState(false);
+  const [qrCodePublicId, setQrCodePublicId] = useState("");
 
   useEffect(() => {
     if (venue) {
@@ -60,6 +61,7 @@ function EditVenueDialog({
       setSecondaryColor(venue.branding.theme.secondaryColor);
       setConfirmingSlug(false);
       setQrCodeUrl(venue.branding.qrCodeUrl ?? "");
+      setQrCodePublicId(venue.branding.qrCodePublicId ?? "");
     }
   }, [venue]);
 
@@ -80,10 +82,8 @@ function EditVenueDialog({
         status,
         branding: {
           qrCodeUrl,
-          theme: {
-            primaryColor,
-            secondaryColor,
-          },
+          qrCodePublicId,
+          theme: { primaryColor, secondaryColor },
         },
       });
       onUpdated(response.data.data);
@@ -121,6 +121,7 @@ function EditVenueDialog({
         headers: { "Content-Type": "multipart/form-data" },
       });
       setQrCodeUrl(response.data.data.url);
+      setQrCodePublicId(response.data.data.publicId);
     } catch (err) {
       setError("QR code upload failed");
     } finally {

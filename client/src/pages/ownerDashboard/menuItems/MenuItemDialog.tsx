@@ -45,6 +45,7 @@ function MenuItemDialog({ open, onOpenChange, item, categories, onSaved }: MenuI
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState("");
     const [image, setImage] = useState("");
+    const [imagePublicId, setImagePublicId] = useState("");
     const [isAvailable, setIsAvailable] = useState(true);
     const [isFeatured, setIsFeatured] = useState(false);
     const [uploading, setUploading] = useState(false);
@@ -55,6 +56,7 @@ function MenuItemDialog({ open, onOpenChange, item, categories, onSaved }: MenuI
         if (item) {
             setCategoryId(item.categoryId);
             setName(item.name);
+            setImagePublicId(item.imagePublicId ?? "");
             setDescription(item.description);
             setPrice(String(item.price));
             setImage(item.image);
@@ -66,6 +68,7 @@ function MenuItemDialog({ open, onOpenChange, item, categories, onSaved }: MenuI
             setDescription("");
             setPrice("");
             setImage("");
+            setImagePublicId("");
             setIsAvailable(true);
             setIsFeatured(false);
         }
@@ -87,6 +90,7 @@ function MenuItemDialog({ open, onOpenChange, item, categories, onSaved }: MenuI
                 headers: { "Content-Type": "multipart/form-data" },
             });
             setImage(response.data.data.url);
+            setImagePublicId(response.data.data.publicId);
         } catch (err) {
             setError("Image upload failed");
         } finally {
@@ -109,6 +113,7 @@ function MenuItemDialog({ open, onOpenChange, item, categories, onSaved }: MenuI
             description,
             price: Number(price),
             image,
+            imagePublicId,
             isAvailable,
             isFeatured,
         };

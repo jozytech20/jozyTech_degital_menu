@@ -19,7 +19,7 @@ import {
   Plus,
 } from "lucide-react";
 import type { AdminVenue, FetchVenuesResponse } from "@/types/user";
-import EditVenueDialog from "../ownerDashboard/EditVenueDialog";
+import EditVenueDialog from "./EditVenueDialog";
 import AddVenueDialog from "./AddVenueDialog";
 
 

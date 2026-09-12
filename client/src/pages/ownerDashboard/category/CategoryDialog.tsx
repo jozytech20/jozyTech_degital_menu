@@ -33,6 +33,7 @@ function CategoryDialog({ open, onOpenChange, category, onSaved }: CategoryDialo
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [image, setImage] = useState("");
+    const [imagePublicId, setImagePublicId] = useState("");
     const [isActive, setIsActive] = useState(true);
     const [uploading, setUploading] = useState(false);
     const [saving, setSaving] = useState(false);
@@ -43,11 +44,13 @@ function CategoryDialog({ open, onOpenChange, category, onSaved }: CategoryDialo
             setName(category.name);
             setDescription(category.description);
             setImage(category.image);
+            setImagePublicId(category.imagePublicId ?? "");
             setIsActive(category.isActive);
         } else {
             setName("");
             setDescription("");
             setImage("");
+            setImagePublicId("");
             setIsActive(true);
         }
         setError("");
@@ -68,6 +71,7 @@ function CategoryDialog({ open, onOpenChange, category, onSaved }: CategoryDialo
                 headers: { "Content-Type": "multipart/form-data" },
             });
             setImage(response.data.data.url);
+            setImagePublicId(response.data.data.publicId);
         } catch (err) {
             setError("Image upload failed");
         } finally {
@@ -86,6 +90,7 @@ function CategoryDialog({ open, onOpenChange, category, onSaved }: CategoryDialo
                     name,
                     description,
                     image,
+                    imagePublicId,
                     isActive,
                 });
             } else {
@@ -93,6 +98,7 @@ function CategoryDialog({ open, onOpenChange, category, onSaved }: CategoryDialo
                     name,
                     description,
                     image,
+                    imagePublicId,
                 });
             }
             onSaved(response.data.data);

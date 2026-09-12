@@ -3,6 +3,7 @@ export interface OwnerCategory {
     name: string;
     description: string;
     image: string;
+    imagePublicId?: string;
     sortOrder: number;
     isActive: boolean;
     createdAt: string;
