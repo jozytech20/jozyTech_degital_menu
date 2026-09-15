@@ -29,7 +29,9 @@ function OwnerVenueSetting() {
     const [phone, setPhone] = useState("");
     const [website, setWebsite] = useState("");
     const [logoUrl, setLogoUrl] = useState("")
+    const [logoPublicId, setLogoPublicId] = useState("");
     const [bannerUrl, setBannerUrl] = useState("")
+    const [bannerUrlPublicId, setBannerUrlPublicId] = useState("");
 
     const logoInputRef = useRef<HTMLInputElement>(null);
     const bannerInputRef = useRef<HTMLInputElement>(null);
@@ -48,6 +50,7 @@ function OwnerVenueSetting() {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             setLogoUrl(response.data.data.url);
+            setLogoPublicId(response.data.data.publicId);
             toast.add({ type: "success", description: "Logo uploaded" });
         } catch {
             toast.add({ type: "error", description: "Logo upload failed" });
@@ -70,6 +73,7 @@ function OwnerVenueSetting() {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             setBannerUrl(response.data.data.url);
+            setBannerUrlPublicId(response.data.data.publicId);
             toast.add({ type: "success", description: "Banner uploaded" });
         } catch {
             toast.add({ type: "error", description: "Banner upload failed" });
@@ -90,7 +94,9 @@ function OwnerVenueSetting() {
                 setPhone(v.phone);
                 setWebsite(v.website ?? "");
                 setLogoUrl(v.branding?.logoUrl ?? "");
+                setLogoPublicId(v.branding?.logoPublicId ?? "");
                 setBannerUrl(v.branding?.bannerUrl ?? "");
+                setBannerUrlPublicId(v.branding?.bannerUrlPublicId ?? "");
 
             } catch (err) {
                 console.error(err);
@@ -110,7 +116,9 @@ function OwnerVenueSetting() {
                 phone,
                 website,
                 logoUrl,
+                logoPublicId,
                 bannerUrl,
+                bannerUrlPublicId,
             });
             setVenue(response.data.data);
             toast.add({ type: "success", description: "Venue settings updated" });

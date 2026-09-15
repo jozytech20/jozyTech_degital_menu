@@ -32,7 +32,7 @@ export const getMyVenue = async (req, res) => {
 export const updateMyVenue = async (req, res) => {
   try {
     const venueId = req.user.venueId;
-    const { name, email, phone, website, logoUrl, logoPublicId, bannerImage, bannerImagePublicId } = req.body;
+    const { name, email, phone, website, logoUrl, logoPublicId, bannerUrl, bannerUrlPublicId } = req.body;
 
     const venue = await Venue.findById(venueId);
     if (!venue) {
@@ -42,16 +42,16 @@ export const updateMyVenue = async (req, res) => {
       });
     }
 
-    if (logoUrl && logoUrl !== venue.branding.logoUrl) {
+    if (logoUrl !== undefined && logoUrl !== venue.branding.logoUrl) {
       await deleteCloudinaryImage(venue.branding.logoPublicId);
       venue.branding.logoUrl = logoUrl;
-      venue.branding.logoPublicId = logoPublicId;
+      venue.branding.logoPublicId = logoPublicId || "";
     }
 
-    if (bannerUrl && bannerUrl !== venue.branding.bannerUrl) {
+    if (bannerUrl !== undefined && bannerUrl !== venue.branding.bannerUrl) {
       await deleteCloudinaryImage(venue.branding.bannerUrlPublicId);
       venue.branding.bannerUrl = bannerUrl;
-      venue.branding.bannerUrlPublicId = bannerUrlPublicId;
+      venue.branding.bannerUrlPublicId = bannerUrlPublicId || "";
     }
 
 
