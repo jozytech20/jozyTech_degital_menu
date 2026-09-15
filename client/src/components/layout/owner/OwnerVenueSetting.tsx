@@ -21,6 +21,7 @@ function OwnerVenueSetting() {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [uploading, setUploading] = useState(false);
+    const [uploadingBanner, setUploadingBanner] = useState(false);
     const [downloadingQr, setDownloadingQr] = useState(false);
 
     const [name, setName] = useState("");
@@ -28,8 +29,10 @@ function OwnerVenueSetting() {
     const [phone, setPhone] = useState("");
     const [website, setWebsite] = useState("");
     const [logoUrl, setLogoUrl] = useState("")
+    const [bannerUrl, setBannerUrl] = useState("")
 
-    const fileInputRef = useRef<HTMLInputElement>(null);
+    const logoInputRef = useRef<HTMLInputElement>(null);
+    const bannerInputRef = useRef<HTMLInputElement>(null);
 
     const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -53,6 +56,28 @@ function OwnerVenueSetting() {
         }
     };
 
+    const handleBannerUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        setUploadingBanner(true);
+
+        const formData = new FormData();
+        formData.append("image", file);
+
+        try {
+            const response = await api.post("/owner/upload-image", formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            });
+            setBannerUrl(response.data.data.url);
+            toast.add({ type: "success", description: "Banner uploaded" });
+        } catch {
+            toast.add({ type: "error", description: "Banner upload failed" });
+        } finally {
+            setUploadingBanner(false);
+        }
+    }
+
     useEffect(() => {
         const fetchVenue = async () => {
             try {
@@ -65,6 +90,7 @@ function OwnerVenueSetting() {
                 setPhone(v.phone);
                 setWebsite(v.website ?? "");
                 setLogoUrl(v.branding?.logoUrl ?? "");
+                setBannerUrl(v.branding?.bannerUrl ?? "");
 
             } catch (err) {
                 console.error(err);
@@ -84,6 +110,7 @@ function OwnerVenueSetting() {
                 phone,
                 website,
                 logoUrl,
+                bannerUrl,
             });
             setVenue(response.data.data);
             toast.add({ type: "success", description: "Venue settings updated" });
@@ -233,7 +260,7 @@ function OwnerVenueSetting() {
                                         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                             <button
                                                 type="button"
-                                                onClick={() => fileInputRef.current?.click()}
+                                                onClick={() => logoInputRef.current?.click()}
                                                 className="bg-white/90 text-black px-3 py-1.5 rounded-md text-xs font-medium hover:bg-white transition-colors"
                                             >
                                                 Change
@@ -255,7 +282,7 @@ function OwnerVenueSetting() {
                                 </div>
                             ) : (
                                 <div
-                                    onClick={() => fileInputRef.current?.click()}
+                                    onClick={() => logoInputRef.current?.click()}
                                     className="group flex flex-col items-center justify-center w-full h-40 border-2 border-dashed rounded-xl cursor-pointer bg-muted/10 hover:bg-primary/5 hover:border-primary/50 transition-all duration-300"
                                 >
                                     {uploading ? (
@@ -275,11 +302,83 @@ function OwnerVenueSetting() {
                                 </div>
                             )}
                             <input
-                                ref={fileInputRef}
+                                ref={logoInputRef}
                                 type="file"
                                 accept="image/*"
                                 className="hidden"
                                 onChange={handleLogoUpload}
+                            />
+                        </div>
+                    </div>
+
+                    {/* banner Upload Section */}
+                    <div className="space-y-3 pt-4 border-t">
+                        <div>
+                            <Label className="text-base font-semibold">Restaurant Banner Image</Label>
+                            <p className="text-sm text-muted-foreground mb-4">
+                                This will be displayed on your public digital menu.
+                            </p>
+                        </div>
+
+                        <div className="mt-2">
+                            {bannerUrl ? (
+                                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 p-4 rounded-xl border bg-muted/20">
+                                    <div className="relative group overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-black/5">
+                                        <img
+                                            src={bannerUrl}
+                                            alt="Restaurant Logo"
+                                            className="w-32 h-32 object-contain p-2"
+                                        />
+                                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                            <button
+                                                type="button"
+                                                onClick={() => bannerInputRef.current?.click()}
+                                                className="bg-white/90 text-black px-3 py-1.5 rounded-md text-xs font-medium hover:bg-white transition-colors"
+                                            >
+                                                Change
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-col gap-2">
+                                        <Button
+                                            type="button"
+                                            variant="destructive"
+                                            size="sm"
+                                            onClick={() => setBannerUrl("")}
+                                            className="w-full sm:w-auto"
+                                        >
+                                            <X className="size-4 mr-2" />
+                                            Remove Banner
+                                        </Button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div
+                                    onClick={() => bannerInputRef.current?.click()}
+                                    className="group flex flex-col items-center justify-center w-full h-40 border-2 border-dashed rounded-xl cursor-pointer bg-muted/10 hover:bg-primary/5 hover:border-primary/50 transition-all duration-300"
+                                >
+                                    {uploadingBanner ? (
+                                        <div className="flex flex-col items-center text-primary">
+                                            <Loader2 className="size-8 animate-spin mb-3" />
+                                            <span className="font-medium">Uploading...</span>
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <div className="p-3 bg-background border shadow-sm rounded-full mb-3 group-hover:scale-110 group-hover:shadow-md group-hover:text-primary transition-all duration-300">
+                                                <Upload className="size-6 text-muted-foreground group-hover:text-primary transition-colors" />
+                                            </div>
+                                            <span className="text-sm font-medium">Click to browse or drag and drop</span>
+                                            <span className="text-xs text-muted-foreground mt-1">PNG, JPG, SVG up to 2MB</span>
+                                        </>
+                                    )}
+                                </div>
+                            )}
+                            <input
+                                ref={bannerInputRef}
+                                type="file"
+                                accept="image/*"
+                                className="hidden"
+                                onChange={handleBannerUpload}
                             />
                         </div>
                     </div>
@@ -302,7 +401,7 @@ function OwnerVenueSetting() {
                     </Button>
                 </CardFooter>
             </Card>
-
+            {/* qr */}
             <Card className="border shadow-sm bg-card overflow-hidden">
                 <CardHeader className="bg-muted/30 border-b pb-6">
                     <div className="flex items-center gap-2">
@@ -320,20 +419,20 @@ function OwnerVenueSetting() {
                                 <img src={venue.branding.qrCodeUrl} alt="QR Code" className="w-48 h-48" />
                             </div>
                             <Button
-                                    onClick={handleQrDownload}
-                                    variant="outline"
-                                    disabled={downloadingQr}
-                                    className="shadow-sm"
-                                >
-                                    {downloadingQr ? (
-                                        <>
-                                            <Loader2 className="size-4 mr-2 animate-spin" />
-                                            Downloading...
-                                        </>
-                                    ) : (
-                                        "Download QR Code"
-                                    )}
-                                </Button>
+                                onClick={handleQrDownload}
+                                variant="outline"
+                                disabled={downloadingQr}
+                                className="shadow-sm"
+                            >
+                                {downloadingQr ? (
+                                    <>
+                                        <Loader2 className="size-4 mr-2 animate-spin" />
+                                        Downloading...
+                                    </>
+                                ) : (
+                                    "Download QR Code"
+                                )}
+                            </Button>
                         </div>
                     ) : (
                         <div className="flex flex-col items-center justify-center h-48 border-2 border-dashed rounded-xl bg-muted/10 text-muted-foreground">

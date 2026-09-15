@@ -32,7 +32,7 @@ export const getMyVenue = async (req, res) => {
 export const updateMyVenue = async (req, res) => {
   try {
     const venueId = req.user.venueId;
-    const { name, email, phone, website, logoUrl, logoPublicId } = req.body;
+    const { name, email, phone, website, logoUrl, logoPublicId, bannerImage, bannerImagePublicId } = req.body;
 
     const venue = await Venue.findById(venueId);
     if (!venue) {
@@ -47,6 +47,14 @@ export const updateMyVenue = async (req, res) => {
       venue.branding.logoUrl = logoUrl;
       venue.branding.logoPublicId = logoPublicId;
     }
+
+    if (bannerUrl && bannerUrl !== venue.branding.bannerUrl) {
+      await deleteCloudinaryImage(venue.branding.bannerUrlPublicId);
+      venue.branding.bannerUrl = bannerUrl;
+      venue.branding.bannerUrlPublicId = bannerUrlPublicId;
+    }
+
+
 
     if (name) venue.name = name;
     if (email) venue.email = email;

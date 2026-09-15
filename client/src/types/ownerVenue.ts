@@ -9,6 +9,7 @@ export interface OwnerVenue {
     branding: {
         logoUrl: string;
         qrCodeUrl?: string;
+        bannerUrl?: string;
         theme: {
             primaryColor: string;
             secondaryColor: string;

@@ -57,6 +57,8 @@ const venueSchema = new mongoose.Schema(
         type: String,
         default: "",
       },
+      bannerUrl: { type: String, default: "" },
+      bannerUrlPublicId: { type: String, default: "" },
       theme: {
         primaryColor: {
           type: String,
